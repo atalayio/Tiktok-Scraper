@@ -1,0 +1,46 @@
+{
+  "name": "tiktok-scraper",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Downloadable TikTok Content Scraper – a lightweight tool for downloading videos without watermarks and without requiring an account login.",
+  "scripts": {
+    "frontend:dev": "pnpm --filter frontend dev",
+    "backend:dev": "pnpm --filter backend dev",
+    "dev": "pnpm --parallel run dev",
+    "frontend:build": "pnpm --filter frontend build",
+    "backend:build": "pnpm --filter backend build",
+    "build": "pnpm --sequential frontend:build backend:build",
+    "frontend:start": "pnpm --filter frontend start",
+    "backend:start": "pnpm --filter backend start",
+    "start": "pnpm --parallel run start",
+    "lint": "pnpm --parallel run lint",
+    "clean": "pnpm --parallel run clean"
+  },
+  "keywords": [
+    "tiktok",
+    "scraper",
+    "downloader",
+    "video",
+    "watermark-free",
+    "tiktok-api",
+    "tiktok-downloader",
+    "no-login"
+  ],
+  "author": {
+    "name": "atalayio",
+    "url": "https://github.com/atalayio"
+  },
+  "homepage": "https://github.com/atalayio/Tiktok-Scraper",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/atalayio/Tiktok-Scraper.git"
+  },
+  "bugs": {
+    "url": "https://github.com/atalayio/Tiktok-Scraper/issues"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+} 
