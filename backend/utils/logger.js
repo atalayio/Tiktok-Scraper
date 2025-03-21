@@ -1,6 +1,36 @@
 const winston = require('winston');
 const path = require('path');
 
+const isVercel = process.env.VERCEL || process.env.VERCEL_ENV;
+
+const transports = [
+  new winston.transports.Console({
+    format: winston.format.combine(
+      winston.format.colorize(),
+      winston.format.simple()
+    )
+  })
+];
+
+if (!isVercel) {
+  transports.push(
+    new winston.transports.File({ 
+      filename: path.join(__dirname, '../../logs/combined.log') 
+    }),
+    
+    new winston.transports.File({ 
+      filename: path.join(__dirname, '../../logs/error.log'),
+      level: 'error'
+    })
+  );
+
+  const fs = require('fs');
+  const logDir = path.join(__dirname, '../../logs');
+  if (!fs.existsSync(logDir)) {
+    fs.mkdirSync(logDir, { recursive: true });
+  }
+}
+
 const logger = winston.createLogger({
   level: process.env.LOG_LEVEL || 'info',
   format: winston.format.combine(
@@ -13,30 +43,8 @@ const logger = winston.createLogger({
     })
   ),
   defaultMeta: { service: 'tiktok-service' },
-  transports: [
-    new winston.transports.Console({
-      format: winston.format.combine(
-        winston.format.colorize(),
-        winston.format.simple()
-      )
-    }),
-    
-    new winston.transports.File({ 
-      filename: path.join(__dirname, '../../logs/combined.log') 
-    }),
-    
-    new winston.transports.File({ 
-      filename: path.join(__dirname, '../../logs/error.log'),
-      level: 'error'
-    })
-  ]
+  transports: transports
 });
-
-const fs = require('fs');
-const logDir = path.join(__dirname, '../../logs');
-if (!fs.existsSync(logDir)) {
-  fs.mkdirSync(logDir, { recursive: true });
-}
 
 const customLogger = {
   error: (message) => logger.error(message),
