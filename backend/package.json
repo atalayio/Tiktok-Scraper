@@ -24,7 +24,7 @@
     "morgan": "^1.10.0",
     "puppeteer": "^22.3.0",
     "puppeteer-extra": "^3.3.6",
-    "puppeteer-extra-plugin-stealth": "github:berstend/puppeteer-extra/packages/puppeteer-extra-plugin-stealth",
+    "puppeteer-extra-plugin-stealth": "2.11.2",
     "rimraf": "^5.0.5",
     "swagger-jsdoc": "^6.2.8",
     "swagger-ui-express": "^5.0.0",

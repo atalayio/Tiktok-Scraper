@@ -47,7 +47,7 @@ importers:
         specifier: ^3.3.6
         version: 3.3.6(puppeteer-core@22.15.0)(puppeteer@22.15.0(typescript@5.8.2))
       puppeteer-extra-plugin-stealth:
-        specifier: ^2.11.2
+        specifier: 2.11.2
         version: 2.11.2(puppeteer-extra@3.3.6(puppeteer-core@22.15.0)(puppeteer@22.15.0(typescript@5.8.2)))
       rimraf:
         specifier: ^5.0.5

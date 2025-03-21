@@ -1,27 +1,11 @@
-let puppeteer;
-let stealthPlugin;
-let chromeLauncher;
+const puppeteer = require('puppeteer-extra');
+const StealthPlugin = require('puppeteer-extra-plugin-stealth');
 
 try {
-  puppeteer = require('puppeteer-extra');
-  
-  try {
-    const StealthPlugin = require('puppeteer-extra-plugin-stealth');
-    stealthPlugin = StealthPlugin();
-    puppeteer.use(stealthPlugin);
-  } catch (e) {
-    console.error('Error loading stealth plugin:', e.message);
-    puppeteer = require('puppeteer');
-  }
-  
-  try {
-    chromeLauncher = require('puppeteer');
-  } catch (e) {
-    console.error('Error loading puppeteer for executable path:', e.message);
-  }
+  puppeteer.use(StealthPlugin());
+  console.log('StealthPlugin successfully loaded');
 } catch (e) {
-  console.error('Error loading puppeteer-extra:', e.message);
-  puppeteer = require('puppeteer');
+  console.error('StealthPlugin is not loaded, error:', e.message);
 }
 
 const fs = require('fs');
@@ -805,14 +789,11 @@ function getChromePath() {
   }
   
   try {
-    if (chromeLauncher && chromeLauncher.executablePath) {
-      return chromeLauncher.executablePath();
-    }
+    return require('puppeteer').executablePath();
   } catch (e) {
-    console.error('Failed to get Chrome executable path:', e.message);
+    console.error('Chrome path is not found, error:', e.message);
+    return undefined;
   }
-  
-  return undefined;
 }
 
 module.exports = {
