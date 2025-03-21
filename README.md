@@ -1,5 +1,7 @@
 # TikTok Video Downloader & Scraper
 
+![TikTok Video Downloader](https://i.ibb.co/TqDJj38W/image-1.png)
+
 **Download TikTok videos without watermarks, no account required, no CAPTCHA solving needed!**
 
 This lightweight tool allows you to easily download TikTok videos without any watermarks. It provides direct access to downloadable URLs, making it perfect for both developers and casual users who need a simple way to save TikTok content.
@@ -67,10 +69,16 @@ The project uses pnpm workspaces to manage both frontend and backend. Here are t
 
 ## 📚 API Documentation
 
-The backend API is documented using Swagger. When running the backend, you can access the Swagger documentation at:
+The backend API is documented using Swagger. You can access the Swagger documentation at:
 
+**Development:**
 ```
 http://localhost:3000/api-docs
+```
+
+**Production:**
+```
+https://tiktok-scraper-backend.vercel.app/api-docs/
 ```
 
 This provides an interactive way to explore and test the available API endpoints.
@@ -97,11 +105,11 @@ The backend provides RESTful APIs that the frontend consumes to present a user-f
 
 ## 🛣️ Roadmap
 
-- **Backend TypeScript Migration** - Convert the backend to TypeScript for better type safety
-- **Scraper Optimization** - Improve performance and reliability of the video extraction
-- **CLI Interface** - Add a command-line interface to use without the frontend
-- **Backend Framework Update** - Consider migrating to NestJS for better architecture
-- **Enhanced Logging** - Implement more detailed logging service for better debugging
+- [ ] Backend TypeScript Migration - Convert the backend to TypeScript for better type safety
+- [ ] Scraper Optimization - Improve performance and reliability of the video extraction
+- [ ] CLI Interface - Add a command-line interface to use without the frontend
+- [ ] Backend Framework Update - Consider migrating to NestJS for better architecture
+- [ ] Enhanced Logging - Implement more detailed logging service for better debugging
 
 ## 🤝 Contributing
 

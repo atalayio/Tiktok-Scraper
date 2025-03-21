@@ -13,6 +13,9 @@ export default function Home() {
         <p className="text-gray-600 dark:text-gray-400 max-w-prose mx-auto">
           Fast and easy download tool for TikTok videos. Paste the video URL and download instantly.
         </p>
+        <p className="text-sm text-gray-500 dark:text-gray-500 max-w-prose mx-auto italic">
+          This tool is for educational purposes only. No profit is being made from this service.
+        </p>
       </div>
       
       <VideoDownloader />

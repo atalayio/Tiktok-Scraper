@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const BACKEND_URL = process.env.BACKEND_URL || 'http://localhost:3000';
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || process.env.BACKEND_URL || 'http://localhost:3000/api';
 
 export async function GET(request: NextRequest) {
   try {
@@ -9,23 +9,20 @@ export async function GET(request: NextRequest) {
 
     if (!tiktokUrl) {
       return NextResponse.json(
-        { success: false, message: 'TikTok URL is required' },
+        { error: 'Missing TikTok URL parameter' },
         { status: 400 }
       );
     }
 
-    // Forward the request to the backend
-    const response = await fetch(`${BACKEND_URL}/api/tiktok-video?url=${encodeURIComponent(tiktokUrl)}`);
+    console.log(`Fetching TikTok video: ${tiktokUrl}`);
+
+    const response = await fetch(`${BACKEND_URL}/tiktok-video?url=${encodeURIComponent(tiktokUrl)}`);
     
     if (!response.ok) {
       const errorData = await response.json();
+      console.error('Error fetching TikTok video:', errorData);
       return NextResponse.json(
-        { 
-          success: false, 
-          message: errorData.message || 'Failed to process TikTok video',
-          status: 'error',
-          code: response.status
-        },
+        { error: errorData.message || 'Failed to fetch TikTok video' },
         { status: response.status }
       );
     }
@@ -35,11 +32,7 @@ export async function GET(request: NextRequest) {
   } catch (error) {
     console.error('Error processing TikTok video request:', error);
     return NextResponse.json(
-      { 
-        success: false, 
-        message: error instanceof Error ? error.message : 'An unexpected error occurred',
-        status: 'error'
-      },
+      { error: 'Internal server error' },
       { status: 500 }
     );
   }
