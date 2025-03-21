@@ -1,14 +1,34 @@
-const puppeteer = require('puppeteer-extra');
-const StealthPlugin = require('puppeteer-extra-plugin-stealth');
-const stealthPlugin = StealthPlugin();
-puppeteer.use(stealthPlugin);
+let puppeteer;
+let stealthPlugin;
+let chromeLauncher;
+
+try {
+  puppeteer = require('puppeteer-extra');
+  
+  try {
+    const StealthPlugin = require('puppeteer-extra-plugin-stealth');
+    stealthPlugin = StealthPlugin();
+    puppeteer.use(stealthPlugin);
+  } catch (e) {
+    console.error('Error loading stealth plugin:', e.message);
+    puppeteer = require('puppeteer');
+  }
+  
+  try {
+    chromeLauncher = require('puppeteer');
+  } catch (e) {
+    console.error('Error loading puppeteer for executable path:', e.message);
+  }
+} catch (e) {
+  console.error('Error loading puppeteer-extra:', e.message);
+  puppeteer = require('puppeteer');
+}
 
 const fs = require('fs');
 const path = require('path');
 const axios = require('axios');
 const crypto = require('crypto');
 const logger = require('../utils/logger');
-const { executablePath } = require('puppeteer');
 
 const USER_AGENTS = [
   'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
@@ -83,9 +103,8 @@ const getVideoUrlViaPlayerApiOnly = async (tiktokUrl) => {
         ignoreHTTPSErrors: true
       };
 
-      // Vercel ortamında Chrome Executable Path'i belirtmeyin
       if (!isVercel) {
-        launchOptions.executablePath = executablePath();
+        launchOptions.executablePath = getChromePath();
       }
 
       browser = await puppeteer.launch(launchOptions);
@@ -342,9 +361,8 @@ const getVideoUrlViaPuppeteer = async (tiktokUrl) => {
         ignoreHTTPSErrors: true
       };
 
-      // Vercel ortamında Chrome Executable Path'i belirtmeyin
       if (!isVercel) {
-        launchOptions.executablePath = executablePath();
+        launchOptions.executablePath = getChromePath();
       }
 
       browser = await puppeteer.launch(launchOptions);
@@ -778,6 +796,24 @@ const downloadDirectVideo = async (videoUrl, sourceUrl = "") => {
     };
   }
 };
+
+function getChromePath() {
+  const isVercel = process.env.VERCEL || process.env.VERCEL_ENV;
+  
+  if (isVercel) {
+    return undefined;
+  }
+  
+  try {
+    if (chromeLauncher && chromeLauncher.executablePath) {
+      return chromeLauncher.executablePath();
+    }
+  } catch (e) {
+    console.error('Failed to get Chrome executable path:', e.message);
+  }
+  
+  return undefined;
+}
 
 module.exports = {
   getVideoUrl,

@@ -6,7 +6,7 @@
       "src": "app.js",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": "{services/**,utils/**,routes/**,*.js,*.json}",
+        "includeFiles": "**/**",
         "maxLambdaSize": "50mb"
       }
     }

@@ -15,7 +15,14 @@ const PORT = process.env.PORT || 3000;
 
 const isVercel = process.env.VERCEL || process.env.VERCEL_ENV;
 
-app.use(cors());
+app.use(cors({
+  origin: ['http://localhost:8080', 'https://tiktok-scraper-frontend.vercel.app', '*'],
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  credentials: true,
+  preflightContinue: false,
+  optionsSuccessStatus: 204
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
