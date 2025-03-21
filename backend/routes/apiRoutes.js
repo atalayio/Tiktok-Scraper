@@ -136,8 +136,6 @@ router.get('/tiktok-download', validateUrl, async (req, res) => {
         StatusCodes.BAD_REQUEST
       );
     }
-    
-    // Convert server file path to client-friendly URL
     const downloadUrl = `/api/stream/${result.file_name}`;
     
     return ApiResponse.success(res, {
@@ -205,11 +203,9 @@ router.get('/stream/:filename', (req, res) => {
     
     logger.info(`Streaming video file: ${filePath}`);
     
-    // Set headers for video
     res.setHeader('Content-Type', 'video/mp4');
     res.setHeader('Content-Disposition', `attachment; filename="${sanitizedFilename}"`);
     
-    // Stream the file
     const fileStream = fs.createReadStream(filePath);
     fileStream.pipe(res);
     
