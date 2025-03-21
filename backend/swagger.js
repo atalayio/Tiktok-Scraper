@@ -1,4 +1,5 @@
 const swaggerJsdoc = require('swagger-jsdoc');
+const path = require('path');
 
 const options = {
   definition: {
@@ -13,8 +14,18 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:3000',
-        description: 'Development server'
+        url: process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000',
+        description: process.env.VERCEL_URL ? 'Production server' : 'Development server'
+      }
+    ],
+    tags: [
+      {
+        name: 'Video',
+        description: 'Video operations'
+      },
+      {
+        name: 'Stream',
+        description: 'Stream operations'
       }
     ],
     components: {
@@ -133,7 +144,7 @@ const options = {
       }
     }
   },
-  apis: ['./routes/*.js']
+  apis: [path.join(__dirname, './routes/*.js')]
 };
 
 const specs = swaggerJsdoc(options);

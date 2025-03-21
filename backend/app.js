@@ -51,8 +51,17 @@ app.use((req, res, next) => {
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/api-docs.json', (req, res) => {
+  const baseUrl = process.env.VERCEL_URL 
+    ? `https://${process.env.VERCEL_URL}` 
+    : `http://localhost:${PORT}`;
+  
+  const updatedSpecs = {
+    ...swaggerSpecs,
+    servers: [{ url: baseUrl, description: process.env.VERCEL_URL ? 'Production server' : 'Development server' }]
+  };
+  
   res.setHeader('Content-Type', 'application/json');
-  res.send(swaggerSpecs);
+  res.send(updatedSpecs);
 });
 
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs, {
