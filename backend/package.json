@@ -27,7 +27,7 @@
     "puppeteer-extra-plugin-stealth": "^2.11.2",
     "rimraf": "^5.0.5",
     "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.0",
+    "swagger-ui-express": "^4.6.3",
     "winston": "^3.11.0"
   },
   "devDependencies": {
