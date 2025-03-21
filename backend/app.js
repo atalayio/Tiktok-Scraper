@@ -7,6 +7,7 @@ const logger = require('./utils/logger');
 const apiRoutes = require('./routes/apiRoutes');
 const swaggerUi = require('swagger-ui-express');
 const swaggerSpecs = require('./swagger');
+const { StatusCodes } = require('http-status-codes');
 const ApiResponse = require('./utils/apiResponse');
 
 const app = express();
@@ -42,7 +43,7 @@ if (!isVercel) {
   app.use(morgan('combined'));
 }
 
-app.use((req, next) => {
+app.use((req, res, next) => {
   logger.request(req);
   next();
 });
@@ -75,7 +76,7 @@ app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpecs, {
 
 app.use('/api', apiRoutes);
 
-app.get('/', (res) => {
+app.get('/', (req, res) => {
   return ApiResponse.success(res, {
     name: 'TikTok Scraper API',
     version: '1.0.0',
@@ -83,7 +84,7 @@ app.get('/', (res) => {
   }, 'TikTok Scraper API is working');
 });
 
-app.use((err, res) => {
+app.use((err, req, res, next) => {
   logger.error(`Error: ${err.message}`);
   return ApiResponse.serverError(res, err);
 });
