@@ -13,26 +13,35 @@ const ApiResponse = require('./utils/apiResponse');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const isVercel = process.env.VERCEL || process.env.VERCEL_ENV;
+
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const logsDir = path.join(__dirname, '../logs');
-if (!fs.existsSync(logsDir)) {
-  fs.mkdirSync(logsDir, { recursive: true });
+if (!isVercel) {
+  const logsDir = path.join(__dirname, '../logs');
+  if (!fs.existsSync(logsDir)) {
+    fs.mkdirSync(logsDir, { recursive: true });
+  }
+
+  const downloadsDir = path.join(__dirname, '../downloads');
+  if (!fs.existsSync(downloadsDir)) {
+    fs.mkdirSync(downloadsDir, { recursive: true });
+  }
 }
 
-const downloadsDir = path.join(__dirname, '../downloads');
-if (!fs.existsSync(downloadsDir)) {
-  fs.mkdirSync(downloadsDir, { recursive: true });
+let accessLogStream;
+if (!isVercel) {
+  const logsDir = path.join(__dirname, '../logs');
+  accessLogStream = fs.createWriteStream(
+    path.join(logsDir, 'access.log'),
+    { flags: 'a' }
+  );
+  app.use(morgan('combined', { stream: accessLogStream }));
+} else {
+  app.use(morgan('combined'));
 }
-
-const accessLogStream = fs.createWriteStream(
-  path.join(logsDir, 'access.log'),
-  { flags: 'a' }
-);
-
-app.use(morgan('combined', { stream: accessLogStream }));
 
 app.use((req, res, next) => {
   logger.request(req);
