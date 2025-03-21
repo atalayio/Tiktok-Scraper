@@ -67,7 +67,9 @@ const getVideoUrlViaPlayerApiOnly = async (tiktokUrl) => {
 
     let browser = null;
     try {
-      browser = await puppeteer.launch({
+      const isVercel = process.env.VERCEL || process.env.VERCEL_ENV;
+
+      const launchOptions = {
         headless: 'new',
         args: [
           '--no-sandbox',
@@ -78,9 +80,15 @@ const getVideoUrlViaPlayerApiOnly = async (tiktokUrl) => {
           '--disable-extensions',
           '--disable-blink-features=AutomationControlled'
         ],
-        ignoreHTTPSErrors: true,
-        executablePath: executablePath()
-      });
+        ignoreHTTPSErrors: true
+      };
+
+      // Vercel ortamında Chrome Executable Path'i belirtmeyin
+      if (!isVercel) {
+        launchOptions.executablePath = executablePath();
+      }
+
+      browser = await puppeteer.launch(launchOptions);
       
       const page = await browser.newPage();
       
@@ -318,7 +326,9 @@ const getVideoUrlViaPuppeteer = async (tiktokUrl) => {
     
     let browser = null;
     try {
-      browser = await puppeteer.launch({
+      const isVercel = process.env.VERCEL || process.env.VERCEL_ENV;
+
+      const launchOptions = {
         headless: 'new',
         args: [
           '--no-sandbox',
@@ -327,12 +337,17 @@ const getVideoUrlViaPuppeteer = async (tiktokUrl) => {
           '--disable-accelerated-2d-canvas',
           '--no-first-run',
           '--disable-extensions',
-          '--disable-blink-features=AutomationControlled',
-          '--window-size=1920,1080'
+          '--disable-blink-features=AutomationControlled'
         ],
-        ignoreHTTPSErrors: true,
-        executablePath: executablePath()
-      });
+        ignoreHTTPSErrors: true
+      };
+
+      // Vercel ortamında Chrome Executable Path'i belirtmeyin
+      if (!isVercel) {
+        launchOptions.executablePath = executablePath();
+      }
+
+      browser = await puppeteer.launch(launchOptions);
       
       const page = await browser.newPage();
       

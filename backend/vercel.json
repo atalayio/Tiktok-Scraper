@@ -12,5 +12,18 @@
       "dest": "app.js"
     }
   ],
-  "outputDirectory": "dist"
+  "outputDirectory": "dist",
+  "functions": {
+    "app.js": {
+      "includeFiles": [
+        "services/**/*",
+        "utils/**/*",
+        "routes/**/*",
+        "node_modules/puppeteer-extra/**/*",
+        "node_modules/puppeteer-extra-plugin-stealth/**/*"
+      ],
+      "memory": 3008,
+      "maxDuration": 60
+    }
+  }
 } 
